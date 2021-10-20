@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #products{
+            display:grid;
+            grid-gap:20px;
+            margin: 5%;
+            grid-template-columns:25% ;
+        }
+
+        img{
+            width:50%;
+            height:150px;
+        }
+        #pop{
+        background-color: burlywood;
+        width: 150px;
+        height: 30px;
+        border-radius: 5px;
+        box-sizing: border-box;
+        padding: 5px;
+        color: black;
+    }
+    #container{
+        margin: auto;
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+    <div id="container">
+    <h2>Search Movies</h2>
+    <input id="inp"/>
+    <button onclick="search()">search</button>
+    <div id="products">
+   
+    </div>
+</div>
+</body>
+<script>
+   //fetch("https://fakestoreapi.com/products")
+   function search(){
+
+    
+   movie=document.getElementById("inp").value
+   fetch( `https://www.omdbapi.com/?t=${movie}&apikey=6ea40c94`)
+    .then(function(res){
+        return res.json();
+
+    })
+    .then(function(res){
+        console.log('res:', res);
+         
+
+     
+        showproducts(res);
+        
+    })
+   
+
+    let container=document.getElementById("products");
+
+    function showproducts(products){
+    // console.log('products:', typeof(products))
+
+    
+                    
+              
+                   
+                
+
+        container.innerHTML=null;
+
+            let div=document.createElement("div");
+
+            let img=document.createElement("img");
+
+            if(products.Poster == undefined){
+                    
+                    img.src = "https://c.tenor.com/az538zZ1pS0AAAAM/sorry-my-fault.gif";
+                    let err_msg = document.createElement("h4");
+                        err_msg.innerText = "Sorry could not find movie you search"
+
+                    div.append(img, err_msg);
+
+                    container.append(div);
+                    return
+                }
+
+            img.src=products.Poster;
+
+            let rate=document.createElement("h4");
+            
+            
+
+            if(Number(products.imdbRating)>=8){
+                rate.innerText=products.imdbRating+"Recomended";
+            }
+
+            let name=document.createElement("p");
+            
+            name.innerText=products.Title;
+
+            // let price=document.createElement("p");
+
+            // price.innerText=products.price;
+            if(products.imdbRating >= 8.5){
+                let popup = document.createElement("div");
+                    popup.setAttribute("id", "pop");
+
+                
+                    popup.innerText = "Suggested for you...";
+
+                
+                
+                div.append(popup);
+            }
+
+            div.append(img,name)
+
+            container.append(div)
+            
+                
+
+    }
+}
+
+
+    
+</script>
+</html>
