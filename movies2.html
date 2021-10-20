@@ -20,23 +20,25 @@
         #container{
         margin: auto;
         text-align: center;
-        justify-content: center;
     }
     </style>
 </head>
 <body>
     <div id="container">
-    <h1>Search Movie</h1>
+        <h2>Search Movie</h2>
     <input id="inp"/>
     <button onclick="search()">search</button>
     <div id="products">
+   
     </div>
-    </div>
+</div>
    
 </body>
 <script>
    //fetch("https://fakestoreapi.com/products")
    function search(){
+
+    
    movie=document.getElementById("inp").value
    fetch( `https://www.omdbapi.com/?t=${movie}&apikey=6ea40c94`)
     .then(function(res){
@@ -50,18 +52,37 @@
      
         showproducts(res);
         
-    });
+    })
+   
 
     let container=document.getElementById("products");
 
     function showproducts(products){
     // console.log('products:', typeof(products))
 
+    
+                    
+              
+                   
+                
+
         container.innerHTML=null;
 
             let div=document.createElement("div");
 
             let img=document.createElement("img");
+
+            if(products.Poster == undefined){
+                    
+                    img.src = "https://c.tenor.com/az538zZ1pS0AAAAM/sorry-my-fault.gif";
+                    let err_msg = document.createElement("h4");
+                        err_msg.innerText = "Sorry could not find movie you search"
+
+                    div.append(img, err_msg);
+
+                    container.append(div);
+                    return
+                }
 
             img.src=products.Poster;
 
@@ -77,7 +98,7 @@
 
             container.append(div)
             
- 
+                
 
     }
 }
